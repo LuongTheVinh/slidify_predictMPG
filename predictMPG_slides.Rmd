@@ -1,0 +1,57 @@
+---
+title       : Predict Car's Miles per Gallon (MPG) from Weight
+subtitle    : A Simple Shiny App
+author      : Luong The Vinh
+job         : Manager, Business Analytics
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+---
+
+`r opts_chunk$set(echo = FALSE)`
+
+## Background: 1974 Motor Trend dataset
+Data on fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973-74 models), e.g.:
+``` {r}
+head(mtcars)
+```
+
+---
+
+## A Car's MPG Is Predominantly Determined by Its Weight
+Result from simple linear regression model of MPG on Weight:
+``` {r}
+model <- lm(mpg ~ wt, mtcars)
+model
+```
+* In terms of Adjusted R Squared, Weight explains **`r summary(model)$adj.r.squared`** (i.e. almost 3/4) of the variation in MPG
+
+* In terms of P-value, Weight is statistically highly significant
+
+---
+
+## Shiny App: Predictive Model of MPG according to Weight
+``` {r fig.width=9, fig.height=6}
+illusWeight <- 3.3
+dataFrame <- as.data.frame(illusWeight)
+names(dataFrame) <- 'wt'
+predMPG <- predict(model, dataFrame)
+            
+plot(mpg ~ wt, mtcars, col = 'blue')
+title('MPG as an approximate linear function of Weight')
+abline(model, col = 'red', lwd = 3)
+abline(v = illusWeight)
+abline(h = predMPG)
+```
+
+---
+
+## Shiny App: Link & How-to-Use
+
+* Go to weblink: https://luongthevinh.shinyapps.io/predictMPG/
+
+* Simply specify your car's weight using the input slider, and see the interactive graph show the predicted MPG
+
+* Have FUN!!!
